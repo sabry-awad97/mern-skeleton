@@ -1,16 +1,9 @@
-import { Request, Response, NextFunction, RequestHandler } from "express";
+import { Response, NextFunction, RequestHandler } from "express";
 
-import User, { IUserDoc } from "../models/user.model";
+import User from "../models/user.model";
 import errorHandler from "./../helpers/dbErrorHandler";
 import extend from "lodash/extend";
-
-interface RequestWithProfile extends Request {
-    profile?:
-        | (IUserDoc & {
-              _id: any;
-          })
-        | null;
-}
+import { RequestWithProfile } from "../types";
 
 const create: RequestHandler = async (req, res, next) => {
     try {

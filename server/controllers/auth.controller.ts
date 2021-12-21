@@ -1,9 +1,10 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 
 import User from "../models/user.model";
 import jwt from "jsonwebtoken";
 import expressJwt from "express-jwt";
 import config from "./../../config/config";
+import { RequestWithProfile, RequestWithAuth } from "../types";
 
 const signin = async (req: Request, res: Response) => {
     try {
@@ -44,5 +45,23 @@ const requireSignin = expressJwt({
     userProperty: "auth",
 });
 
-const hasAuthorization = (req: Request, res: Response) => {};
+const hasAuthorization = (
+    req: RequestWithAuth & RequestWithProfile,
+    res: Response,
+    next: NextFunction
+) => {
+    console.log(req.auth);
+
+    const authorized =
+        req.profile && req.auth && req.profile._id === req.auth._id;
+
+    if (!authorized) {
+        return res.status(403).json({
+            error: "User is not authorized",
+        });
+    }
+
+    next();
+};
+
 export default { signin, signout, requireSignin, hasAuthorization };
