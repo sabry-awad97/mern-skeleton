@@ -2,8 +2,9 @@
     "name": "mern-skeleton",
     "version": "1.0.0",
     "description": "A MERN stack skeleton web application",
-    "main": "index.js",
+    "main": "./server/server.ts",
     "scripts": {
+        "start": "ts-node .",
         "dev": "nodemon"
     },
     "repository": {
@@ -29,7 +30,8 @@
         "cookie-parser": "^1.4.6",
         "cors": "^2.8.5",
         "express": "^4.17.2",
-        "helmet": "^4.6.0"
+        "helmet": "^4.6.0",
+        "mongoose": "^6.1.2"
     },
     "devDependencies": {
         "@types/compression": "^1.7.2",
