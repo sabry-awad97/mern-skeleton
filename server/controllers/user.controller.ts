@@ -20,7 +20,6 @@ const create: RequestHandler = async (req, res, next) => {
 
 const list: RequestHandler = async (req, res) => {
     try {
-        // populates only the name, email, created, and updated fields
         let users = await User.find().select("name email updated created");
         res.json(users);
     } catch (err) {
@@ -67,7 +66,6 @@ const update = async (
     try {
         let user = req.profile;
 
-        // merge the changes
         user = extend(user, req.body);
 
         if (!user) return;
