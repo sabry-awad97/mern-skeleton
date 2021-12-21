@@ -2,6 +2,7 @@ import { Request, Response, NextFunction, RequestHandler } from "express";
 
 import User, { IUserDoc } from "../models/user.model";
 import errorHandler from "./../helpers/dbErrorHandler";
+import extend from "lodash/extend";
 
 interface RequestWithProfile extends Request {
     profile?:
@@ -69,7 +70,30 @@ const read = (req: RequestWithProfile, res: Response) => {
     return res.json(req.profile);
 };
 
-const update: RequestHandler = (req, res, next) => {};
+const update = async (
+    req: RequestWithProfile,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        let user = req.profile;
+
+        // merge the changes
+        user = extend(user, req.body);
+
+        if (!user) return;
+
+        user.updated = Date.now();
+        await user.save();
+        user.hashed_password = undefined;
+        user.salt = undefined;
+        res.json(user);
+    } catch (err) {
+        return res.status(400).json({
+            error: errorHandler.getErrorMessage(err),
+        });
+    }
+};
 const remove: RequestHandler = (req, res, next) => {};
 
 export default { create, userByID, read, list, remove, update };
