@@ -4,8 +4,8 @@ import crypto from "crypto";
 interface IUser {
     name: string;
     email: string;
-    hashed_password: string;
-    salt: string;
+    hashed_password?: string;
+    salt?: string;
     updated: Date;
     created: number;
 }
@@ -16,7 +16,7 @@ interface InstanceMethods {
     makeSalt(): string;
 }
 
-interface IUserDoc extends IUser, InstanceMethods, Document {
+export interface IUserDoc extends IUser, InstanceMethods, Document {
     _password: string;
 }
 
@@ -57,7 +57,7 @@ UserSchema.virtual("password")
 
 UserSchema.path("hashed_password").validate(function (
     this: IUserDoc,
-    v: string
+    val: string
 ) {
     if (this._password && this._password.length < 6) {
         this.invalidate("password", "Password must be at least 6 characters.");
@@ -67,24 +67,25 @@ UserSchema.path("hashed_password").validate(function (
     }
 });
 
-UserSchema.methods.authenticate = function (plainText: string): boolean {
-    return this.encryptPassword(plainText) === this.hashed_password;
-};
-
-UserSchema.methods.encryptPassword = function (password: string): string {
-    if (!password) return "";
-    try {
-        return crypto
-            .createHmac("sha1", this.salt)
-            .update(password)
-            .digest("hex");
-    } catch (err) {
-        return "";
-    }
-};
-
-UserSchema.methods.makeSalt = function (): string {
-    return Math.round(new Date().valueOf() * Math.random()) + "";
+// instance methods
+UserSchema.methods = {
+    authenticate(plainText: string): boolean {
+        return this.encryptPassword(plainText) === this.hashed_password;
+    },
+    encryptPassword(password: string): string {
+        if (!password) return "";
+        try {
+            return crypto
+                .createHmac("sha1", this.salt!)
+                .update(password)
+                .digest("hex");
+        } catch (err) {
+            return "";
+        }
+    },
+    makeSalt(): string {
+        return Math.round(new Date().valueOf() * Math.random()) + "";
+    },
 };
 
 export default model<IUserDoc>("User", UserSchema);

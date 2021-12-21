@@ -1,7 +1,15 @@
 import { Request, Response, NextFunction, RequestHandler } from "express";
 
-import User from "../models/user.model";
+import User, { IUserDoc } from "../models/user.model";
 import errorHandler from "./../helpers/dbErrorHandler";
+
+interface RequestWithProfile extends Request {
+    profile?:
+        | (IUserDoc & {
+              _id: any;
+          })
+        | null;
+}
 
 /**
  * This function creates a new user with the user JSON object
@@ -22,6 +30,7 @@ const create: RequestHandler = async (req, res, next) => {
 
 const list: RequestHandler = async (req, res) => {
     try {
+        // populates only the name, email, created, and updated fields
         let users = await User.find().select("name email updated created");
         res.json(users);
     } catch (err) {
@@ -31,13 +40,35 @@ const list: RequestHandler = async (req, res) => {
     }
 };
 
-const userByID = (
-    req: Request,
+const userByID = async (
+    req: RequestWithProfile,
     res: Response,
     next: NextFunction,
     id: any
-) => {};
-const read: RequestHandler = (req, res) => {};
+) => {
+    try {
+        let user = await User.findById(id);
+        if (!user)
+            return res.status(400).json({
+                error: "User not found",
+            });
+        req.profile = user;
+        next();
+    } catch (err) {
+        return res.status(400).json({
+            error: "Could not retrieve user",
+        });
+    }
+};
+
+const read = (req: RequestWithProfile, res: Response) => {
+    const { profile } = req;
+    if (!profile) return;
+    profile.hashed_password = undefined;
+    profile.salt = undefined;
+    return res.json(req.profile);
+};
+
 const update: RequestHandler = (req, res, next) => {};
 const remove: RequestHandler = (req, res, next) => {};
 
