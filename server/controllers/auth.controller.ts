@@ -31,6 +31,13 @@ const signin = async (req: Request, res: Response) => {
     }
 };
 
+const signout = (req: Request, res: Response) => {
+    res.clearCookie("t");
+    return res.status(200).json({
+        message: "signed out",
+    });
+};
+
 const requireSignin = expressJwt({
     algorithms: ["HS256"],
     secret: config.jwtSecret,
