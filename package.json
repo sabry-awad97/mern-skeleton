@@ -22,5 +22,8 @@
     "bugs": {
         "url": "https://github.com/sabry-awad97/mern-skeleton/issues"
     },
-    "homepage": "https://github.com/sabry-awad97/mern-skeleton#readme"
+    "homepage": "https://github.com/sabry-awad97/mern-skeleton#readme",
+    "dependencies": {
+        "@types/node": "^17.0.2"
+    }
 }
