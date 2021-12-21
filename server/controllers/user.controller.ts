@@ -19,7 +19,18 @@ const create: RequestHandler = async (req, res, next) => {
         });
     }
 };
-const list: RequestHandler = (req, res) => {};
+
+const list: RequestHandler = async (req, res) => {
+    try {
+        let users = await User.find().select("name email updated created");
+        res.json(users);
+    } catch (err) {
+        return res.status(400).json({
+            error: errorHandler.getErrorMessage(err),
+        });
+    }
+};
+
 const userByID = (
     req: Request,
     res: Response,
