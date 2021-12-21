@@ -1,7 +1,5 @@
 {
     "verbose": false,
-    "watch": [
-      "server"
-    ],
-    "exec": "ts-node ./server/server.ts"
+    "watch": ["./src/server"],
+    "exec": "webpack --mode=development --config webpack.config.server.js && node ."
 }

@@ -1,4 +1,4 @@
-import config from "./../config/config";
+import config from "../config/config";
 import app from "./app";
 
 import mongoose from "mongoose";
@@ -13,7 +13,7 @@ const server = app.listen(port);
 
 server.on("listening", () => {
     console.info(`Server is running at http://localhost:${port}`);
-})
+});
 
 server.on("error", (err: NodeJS.ErrnoException) => {
     // EADDRINUSE => when another server is already

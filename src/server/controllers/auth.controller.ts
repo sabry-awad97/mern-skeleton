@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from "express";
 import User from "../models/user.model";
 import jwt from "jsonwebtoken";
 import expressJwt from "express-jwt";
-import config from "./../../config/config";
+import config from "../../config/config";
 import { RequestWithProfile, RequestWithAuth } from "../types";
 
 const signin = async (req: Request, res: Response) => {

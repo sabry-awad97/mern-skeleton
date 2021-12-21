@@ -1,7 +1,7 @@
 import { Response, NextFunction, RequestHandler } from "express";
 
 import User from "../models/user.model";
-import errorHandler from "./../helpers/dbErrorHandler";
+import errorHandler from "../helpers/dbErrorHandler";
 import extend from "lodash/extend";
 import { RequestWithProfile } from "../types";
 
