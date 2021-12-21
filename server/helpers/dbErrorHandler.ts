@@ -35,6 +35,7 @@ const getErrorMessage = (err: any) => {
                 message = "Something went wrong";
         }
     } else {
+        // Mongoose validation errors
         for (let errName in err.errors) {
             if (err.errors[errName].message)
                 message = err.errors[errName].message;
