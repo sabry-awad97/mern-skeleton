@@ -6,7 +6,7 @@ interface IUser {
     email: string;
     hashed_password?: string;
     salt?: string;
-    updated: Date;
+    updated: Number;
     created: number;
 }
 
@@ -38,7 +38,7 @@ const UserSchema = new Schema<IUserDoc>({
         required: [true, "Password is required"],
     },
     salt: String,
-    updated: Date,
+    updated: Number,
     created: {
         type: Number,
         default: Date.now,

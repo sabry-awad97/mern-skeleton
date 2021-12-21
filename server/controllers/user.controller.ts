@@ -12,10 +12,6 @@ interface RequestWithProfile extends Request {
         | null;
 }
 
-/**
- * This function creates a new user with the user JSON object
- * that's received in the POST request from the frontend within req.body.
- */
 const create: RequestHandler = async (req, res, next) => {
     try {
         await User.create(req.body);
@@ -94,6 +90,24 @@ const update = async (
         });
     }
 };
-const remove: RequestHandler = (req, res, next) => {};
+
+const remove = async (
+    req: RequestWithProfile,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        let user = req.profile;
+        if (!user) return;
+        let deletedUser = await user.remove();
+        deletedUser.hashed_password = undefined;
+        deletedUser.salt = undefined;
+        res.json(deletedUser);
+    } catch (err) {
+        return res.status(400).json({
+            error: errorHandler.getErrorMessage(err),
+        });
+    }
+};
 
 export default { create, userByID, read, list, remove, update };
