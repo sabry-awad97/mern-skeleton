@@ -1,0 +1,26 @@
+{
+    "name": "mern-skeleton",
+    "version": "1.0.0",
+    "description": "A MERN stack skeleton web application",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/sabry-awad97/mern-skeleton.git"
+    },
+    "author": "Sabry Awad",
+    "license": "ISC",
+    "keywords": [
+        "react",
+        "express",
+        "mongodb",
+        "node",
+        "mern"
+    ],
+    "bugs": {
+        "url": "https://github.com/sabry-awad97/mern-skeleton/issues"
+    },
+    "homepage": "https://github.com/sabry-awad97/mern-skeleton#readme"
+}
